@@ -5,6 +5,7 @@ const MessagesList = ({
                          messages,
     checkboxChange,
     starChange,
+    messageBodyChange
                      }) => (
     <div>
         {messages.map(message =>
@@ -14,6 +15,7 @@ const MessagesList = ({
                 message={message}
                 checkboxChange={checkboxChange}
                 starChange={starChange}
+                messageBodyChange={messageBodyChange}
             />)}
     </div>
 )

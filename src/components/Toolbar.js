@@ -9,7 +9,8 @@ const Toolbar = ({
                      handleMarkAsUnread,
                      handleRemoveMessages,
                      handleApplyLabel,
-                     handleRemoveLabel
+                     handleRemoveLabel,
+                     handleDeleteMessages
                  }) => {
 
     let isMessagesSelected = true
@@ -76,7 +77,7 @@ const Toolbar = ({
       <option value="gschool">gschool</option>
     </select>
 
-    <button className="btn btn-default" disabled={!isMessagesSelected} onClick={handleRemoveMessages}>
+    <button className="btn btn-default" disabled={!isMessagesSelected} onClick={handleDeleteMessages}>
                     <i className="fa fa-trash-o"></i>
                 </button>
   </div>

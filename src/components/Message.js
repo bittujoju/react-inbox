@@ -5,12 +5,13 @@ const Message = ({
                      message,
                      checkboxChange,
                      starChange,
+                     messageBodyChange
                  }) => {
 
     let rowStyle = "row message"
-    let bodyRowStyle = "row message-body"
+    let bodyRowStyle = "row message-body collapsed"
     if (message.expanded === true) {
-        rowStyle += " expanded"
+        bodyRowStyle = "row message-body"
     }
     if (message.selected === true) {
         rowStyle += " selected"
@@ -28,7 +29,7 @@ const Message = ({
 
     return (
       <div>
-        <div className={rowStyle}>
+        <div className={rowStyle} >
             <div className="col-xs-1">
                 <div className="row">
                     <div className="col-xs-2">
@@ -44,7 +45,7 @@ const Message = ({
                     </div>
                 </div>
             </div>
-            <div className="col-xs-11">
+            <div className="col-xs-11" onClick={(e) => messageBodyChange(e, id)}>
                 {message.labels.map((msg, i) =>
                     <span key={i} className="label label-warning">{msg}</span>
                 )

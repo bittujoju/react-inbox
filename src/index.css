@@ -76,3 +76,7 @@ footer.spacer {
 .composing-form {
   display: none;
 }
+
+.collapsed {
+  display: none;
+}

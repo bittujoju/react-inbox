@@ -116,6 +116,17 @@ export class Inbox extends Component {
        const newMessages = [...this.state.messages, newMessage]
        this.setState({messages: newMessages})
    }
+   messageBodyChange = (e, id) => {
+       const newMessages = this.state.messages.map(message => {
+           if (message.id === id) {
+               message.expanded = !message.expanded
+               message.read = true
+           }
+           return message
+       })
+
+       this.setState({messages: newMessages})
+   }
     render() {
             return (
                 <div>
@@ -128,11 +139,13 @@ export class Inbox extends Component {
                    handleDeleteMessages={this.handleRemoveMessages}
                    handleApplyLabel={this.handleApplyLabel}
                    handleRemoveLabel={this.handleRemoveLabel}
+                   handleDeleteMessages={this.handleDeleteMessages}
                />
                <MessageList
                    messages={this.state.messages}
                    checkboxChange={this.handleCheckboxChange}
                    starChange={this.handleStarChange}
+                   messageBodyChange={this.messageBodyChange}
                />
                  </div>
         )
