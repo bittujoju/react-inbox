@@ -10,6 +10,30 @@ export class Inbox extends Component {
             messages: props.messages
         }
     }
+
+    async componentDidMount() {
+      const messages = await this.getMessages();
+      this.setState({messages: messages})
+      }
+
+    async getMessages() {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/messages`);
+      const json = await response.json();
+      return json._embedded.messages;
+    }
+
+    async patchMessages(body) {
+      alert(body)
+      const response = await fetch  (`${process.env.REACT_APP_API_URL}/api/messages`, {
+        method: 'PATCH',
+        body: JSON.stringify({body}),
+        headers: {
+          "Content-Type": 'application/json',
+          'Accept': 'application/json'
+        }
+      });
+    }
+
     handleCheckboxChange = (e, id) => {
        const newMessages = this.state.messages.map(message => {
            if (message.id === id) {
@@ -22,13 +46,16 @@ export class Inbox extends Component {
    }
 
    handleStarChange = (e, id) => {
+       const body = {"messageIds": [], "command": "star", "star": false}
        const newMessages = this.state.messages.map(message => {
            if (message.id === id) {
                message.starred = !message.starred
+               body.messageIds.push(message.id)
+               body.star = message.starred
            }
            return message
        })
-
+       this.patchMessages(body)
        this.setState({messages: newMessages})
    }
 
@@ -55,29 +82,41 @@ export class Inbox extends Component {
    }
 
    handleMarkAsRead = () => {
+       const body = {"messageIds": [], "command": "read", "read": false}
        const newMessages = this.state.messages.map(message => {
            if (message.selected) {
                message.read = true
+               body.messageIds.push(message.id)
+               body.read = message.read
            }
            return message
        })
-
+       this.patchMessages(body)
        this.setState({messages: newMessages})
    }
 
    handleMarkAsUnread = () => {
+       const body = {"messageIds": [], "command": "read", "read": false}
        const newMessages = this.state.messages.map(message => {
            if (message.selected) {
                message.read = false
+               body.messageIds.push(message.id)
+               body.read = message.read
            }
            return message
        })
-
+       this.patchMessages(body)
        this.setState({messages: newMessages})
    }
 
    handleDeleteMessages = () => {
+       const body = {"messageIds": [], "command": "delete"}
        const newMessages = this.state.messages.filter(message => !message.selected)
+       this.state.messages.map(message => {
+         if (message.selected) {
+                  body.messageIds.push(message.id)
+              }})
+       this.patchMessages(body)
        this.setState({messages: newMessages})
    }
 

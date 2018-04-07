@@ -29,12 +29,18 @@ const Toolbar = ({
       const message = {subject: e.target.subject.value, body: e.target.body.value}
       handleAddMessage(message)
     }
-    const closeComposeForm = (e) => {
+    const toggleComposeForm = (e) => {
       e.preventDefault()
-      document.getElementById("composing-form").style.display = "inline"
-      document.getElementById("subject").value = ""
-      document.getElementById("body").value = ""
-    }
+      let composingForm = document.getElementById("composing-form")
+      let isComposingMessage = (composingForm.style.display == "inline" ? true : false)
+      if (isComposingMessage == true) {
+        composingForm.style.display = "none"
+        document.getElementById("subject").value = ""
+        document.getElementById("body").value = ""
+      } else {
+        composingForm.style.display = "inline"
+
+    }}
     return (
       <div className="row toolbar">
         <div className="col-md-12">
@@ -43,7 +49,7 @@ const Toolbar = ({
                   {unreadMessages.length === 1 ? `unread message` : `unread messages`}
           </p>
 
-    <a className="btn btn-danger" onClick={closeComposeForm}>
+    <a className="btn btn-danger" onClick={toggleComposeForm}>
       <i className="fa fa-plus"></i>
     </a>
 
