@@ -1,11 +1,13 @@
 import React from 'react'
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
 import Message from './Message'
+import {Route, withRouter} from 'react-router-dom'
 
 const MessagesList = ({
                          messages,
     checkboxChange,
     starChange,
-    messageBodyChange
                      }) => (
     <div>
         {messages.map(message =>
@@ -15,9 +17,14 @@ const MessagesList = ({
                 message={message}
                 checkboxChange={checkboxChange}
                 starChange={starChange}
-                messageBodyChange={messageBodyChange}
             />)}
     </div>
 )
+const mapStateToProps=(state, props) =>({
+  messages: state.messages.all,
+  requestData:state.requestData
+})
+const mapDispatchToProps=dispatch=> bindActionCreators({
 
-export default MessagesList
+}, dispatch)
+export default withRouter( connect(mapStateToProps, mapDispatchToProps)(MessagesList))

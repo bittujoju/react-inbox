@@ -1,16 +1,17 @@
 import React from 'react'
-import ComposingForm from './ComposingForm'
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
+import { Link, Route, Switch, withRouter } from 'react-router-dom'
 
 const Toolbar = ({
-                     messages,
-                     handleAddMessage,
+                      messages,
                      handleToolbarMessageCheckboxClick,
-                     handleMarkAsRead,
-                     handleMarkAsUnread,
-                     handleRemoveMessages,
-                     handleApplyLabel,
-                     handleRemoveLabel,
-                     handleDeleteMessages
+                     markAsRead,
+                     markAsUnread,
+                     deleteSelected,
+                     applyLabel,
+                    removeLabel,
+                     toggleComposMessage
                  }) => {
 
     let isMessagesSelected = true
@@ -22,52 +23,44 @@ const Toolbar = ({
     } else if (selectedMessages.length === messages.length) {
         checkedMessagesStyle = "fa fa-check-square-o"
     }
-    const unreadMessages = messages.filter(message => message.read === false)
-    const buildMessage = (e) => {
-      e.preventDefault()
-      document.getElementById("composing-form").style.display = "none"
-      const message = {subject: e.target.subject.value, body: e.target.body.value}
-      handleAddMessage(message)
-    }
-    const toggleComposeForm = (e) => {
-      e.preventDefault()
-      let composingForm = document.getElementById("composing-form")
-      let isComposingMessage = (composingForm.style.display == "inline" ? true : false)
-      if (isComposingMessage == true) {
-        composingForm.style.display = "none"
-        document.getElementById("subject").value = ""
-        document.getElementById("body").value = ""
-      } else {
-        composingForm.style.display = "inline"
 
-    }}
+    const unreadMessages = messages.filter(message => message.read === false)
+
     return (
       <div className="row toolbar">
-        <div className="col-md-12">
-          <p className="pull-right">
-            <span className="badge badge">{unreadMessages.length} </span>
+  <div className="col-md-12">
+    <p className="pull-right">
+    <span className="badge badge">{unreadMessages.length}</span>
                   {unreadMessages.length === 1 ? `unread message` : `unread messages`}
-          </p>
-
-    <a className="btn btn-danger" onClick={toggleComposeForm}>
-      <i className="fa fa-plus"></i>
-    </a>
+    </p>
+    <Switch>
+           <Route path="/compose" render={ () => (
+             <Link className="btn btn-danger" to="/">
+               <i className={`fa fa-plus`}></i>
+             </Link>
+           )} />
+           <Route render={ () => (
+             <Link className="btn btn-danger" to="/compose">
+               <i className={`fa fa-plus`}></i>
+             </Link>
+           )} />
+    </Switch>
 
     <button className="btn btn-default" onClick={handleToolbarMessageCheckboxClick}>
                     <i className={checkedMessagesStyle}></i>
     </button>
 
-    <button className="btn btn-default" disabled={!isMessagesSelected} onClick={handleMarkAsRead}>
+    <button className="btn btn-default" disabled={!isMessagesSelected} onClick={()=>markAsRead(messages)}>
       Mark As Read
     </button>
 
-    <button className="btn btn-default" disabled={!isMessagesSelected} onClick={handleMarkAsUnread}>
+    <button className="btn btn-default" disabled={!isMessagesSelected} onClick={()=>markAsUnread(messages)}>
       Mark As Unread
     </button>
 
     <select className="form-control label-select" disabled={!isMessagesSelected}
                         value="Apply label"
-                        onChange={handleApplyLabel}>
+                        onChange={(e) => applyLabel(e.target.value, messages)}>
       <option>Apply label</option>
       <option value="dev">dev</option>
       <option value="personal">personal</option>
@@ -76,25 +69,19 @@ const Toolbar = ({
 
     <select className="form-control label-select"  disabled={!isMessagesSelected}
                     value="Remove label"
-                    onChange={handleRemoveLabel}>
+                    onChange={(e) => removeLabel(e.target.value, messages)}>
       <option>Remove label</option>
       <option value="dev">dev</option>
       <option value="personal">personal</option>
       <option value="gschool">gschool</option>
     </select>
 
-    <button className="btn btn-default" disabled={!isMessagesSelected} onClick={handleDeleteMessages}>
+    <button className="btn btn-default" disabled={!isMessagesSelected} onClick={() => deleteSelected(messages)}>
                     <i className="fa fa-trash-o"></i>
                 </button>
   </div>
-  <div id="composing-form" className="composing-form">
-  <ComposingForm
-    buildMessage={buildMessage}
-  />
-</div>
 </div>
 
     )
 }
-
 export default Toolbar;
