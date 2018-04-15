@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux'
-import {MESSAGES_RECEIVED,MESSAGES_TOGGLE_COMPOSE,MARK_AS_READ,MARK_AS_UNREAD, MESSAGES_SELECTED, MESSAGE_STAR_TOGGLE,MESSAGES_DELETE, APPLY_LABEL, REMOVE_LABEL, MESSAGE_BODY_REQUEST_STARTED, MESSAGE_BODY_REQUEST_SUCCESS } from '../actions'
+import {MESSAGES_RECEIVED,MESSAGES_TOGGLE_COMPOSE,MARK_AS_READ,MARK_AS_UNREAD, SELECT_ALL, UNSELECT_ALL, MESSAGE_SELECTION_TOGGLE, MESSAGE_STAR_TOGGLE,MESSAGES_DELETE, APPLY_LABEL, REMOVE_LABEL, MESSAGE_BODY_REQUEST_STARTED, MESSAGE_BODY_REQUEST_SUCCESS } from '../actions'
 
 function messages(state = { all: [], ComposeMessage:false }, action) {
   let messages;
@@ -21,7 +21,7 @@ function messages(state = { all: [], ComposeMessage:false }, action) {
         ...state,
         ComposeMessage: !state.ComposeMessage
       }
-      case MESSAGES_SELECTED:
+      case MESSAGE_SELECTION_TOGGLE:
         return {
           ...state,
           all: state.all.map(message =>{
@@ -31,6 +31,20 @@ function messages(state = { all: [], ComposeMessage:false }, action) {
             return message
           })
         }
+      case SELECT_ALL:
+        return {
+          ...state,
+          all: state.all.map(message =>{return {...message, selected: true}
+            return message
+          })
+        }
+        case UNSELECT_ALL:
+          return {
+            ...state,
+            all: state.all.map(message =>{return {...message, selected: false}
+              return message
+            })
+          }
         case MESSAGE_STAR_TOGGLE:
           return {
             ...state,

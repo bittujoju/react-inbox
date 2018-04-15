@@ -33,17 +33,31 @@ export const MESSAGES_TOGGLE_COMPOSE = 'MESSAGES_TOGGLE_COMPOSE'
 export function toggleComposMessage(requestData) {
   return async (dispatch) => {
     dispatch({
-      type: MESSAGES_TOGGLE_COMPOSE,
-
+      type: MESSAGES_TOGGLE_COMPOSE
     })
   }
 }
 
-export const MESSAGES_SELECTED = 'MESSAGES_SELECTED'
+export const MESSAGE_SELECTION_TOGGLE = 'MESSAGE_SELECTION_TOGGLE'
 export function selectMessage(id){
   return {
-    type:MESSAGES_SELECTED,
+    type:MESSAGE_SELECTION_TOGGLE,
     id
+  }
+}
+
+export const SELECT_ALL = 'SELECT_ALL'
+export const UNSELECT_ALL = 'UNSELECT_ALL'
+export function handleSelectAll(isAllMessagesSelected){
+  if (isAllMessagesSelected){
+    return{
+      type:UNSELECT_ALL
+    }
+  }
+  else {
+  return {
+    type:SELECT_ALL
+  }
   }
 }
 export const MESSAGE_STAR_TOGGLE = 'MESSAGE_STAR_TOGGLE'
@@ -133,7 +147,6 @@ export function applyLabel(labelName, messages) {
                 type: APPLY_LABEL,
                 labelName
             });
-            fetchMessages();
         }
     }
 }

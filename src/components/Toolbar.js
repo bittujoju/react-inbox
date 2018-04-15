@@ -5,7 +5,7 @@ import { Link, Route, Switch, withRouter } from 'react-router-dom'
 
 const Toolbar = ({
                       messages,
-                     handleToolbarMessageCheckboxClick,
+                     handleSelectAll,
                      markAsRead,
                      markAsUnread,
                      deleteSelected,
@@ -15,12 +15,14 @@ const Toolbar = ({
                  }) => {
 
     let isMessagesSelected = true
+    let isAllMessagesSelected = false
     let checkedMessagesStyle = "fa fa-minus-square-o"
     let selectedMessages = messages.filter(message => message.selected === true)
     if (selectedMessages.length === 0) {
         isMessagesSelected = false
         checkedMessagesStyle = "fa fa-square-o"
     } else if (selectedMessages.length === messages.length) {
+        isAllMessagesSelected = true
         checkedMessagesStyle = "fa fa-check-square-o"
     }
 
@@ -46,7 +48,7 @@ const Toolbar = ({
            )} />
     </Switch>
 
-    <button className="btn btn-default" onClick={handleToolbarMessageCheckboxClick}>
+    <button className="btn btn-default" onClick={()=>handleSelectAll(isAllMessagesSelected)}>
                     <i className={checkedMessagesStyle}></i>
     </button>
 

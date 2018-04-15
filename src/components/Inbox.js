@@ -4,7 +4,7 @@ import Compose from './ComposeMessage'
 import Toolbar from './Toolbar'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import {fetchMessages, toggleComposMessage, markAsRead, markAsUnread, deleteSelected , applyLabel, removeLabel} from '../actions'
+import {fetchMessages, toggleComposMessage, markAsRead, markAsUnread, handleSelectAll, deleteSelected , applyLabel, removeLabel} from '../actions'
 import {Route, withRouter} from 'react-router-dom'
 export class Inbox extends React.Component {
   propTypes:{
@@ -22,6 +22,7 @@ export class Inbox extends React.Component {
             return (
                 <div>
                 <Toolbar  messages={this.props.messages}
+                handleSelectAll={this.props.handleSelectAll}
                 markAsRead={this.props.markAsRead}
                 markAsUnread={this.props.markAsUnread}
                 applyLabel={this.props.applyLabel}
@@ -52,7 +53,8 @@ const mapDispatchToProps = dispatch => bindActionCreators({
   applyLabel,
   markAsRead,
   markAsUnread,
-  removeLabel
+  removeLabel,
+  handleSelectAll
 }, dispatch)
 
 export default withRouter(connect(
