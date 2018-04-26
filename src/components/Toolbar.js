@@ -10,7 +10,7 @@ const Toolbar = ({
                      markAsUnread,
                      deleteSelected,
                      applyLabel,
-                    removeLabel,
+                     removeLabel,
                      toggleComposMessage
                  }) => {
 

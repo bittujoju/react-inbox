@@ -94,10 +94,10 @@ export function sendMessage(subject, body, history) {
      })
      const json = await response.json()
     dispatch({
-    type: MESSAGES_SEND,
-      messages: json
+      type: MESSAGES_SEND,
+      message: json
     })
-    history.push("/")
+    // history.push("/")
   }
 }
 
@@ -143,6 +143,7 @@ export function applyLabel(labelName, messages) {
                     'Accept': 'application/json',
                 }
             });
+
             dispatch({
                 type: APPLY_LABEL,
                 labelName
