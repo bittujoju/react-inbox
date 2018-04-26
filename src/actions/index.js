@@ -13,7 +13,9 @@ export const MESSAGE_BODY_REQUEST_STARTED = 'MESSAGE_BODY_REQUEST_STARTED'
 export const MESSAGE_BODY_REQUEST_SUCCESS = 'MESSAGE_BODY_REQUEST_SUCCESS'
 export const fetchMessageBody = (id) => {
   return async (dispatch, getState) => {
-    const message = getState().messages.id[id]
+    const messages = getState().messages
+    const message = messages.id[id]
+
     dispatch({ type: MESSAGE_BODY_REQUEST_STARTED })
 
     const response = await fetch(message._links.self.href)
@@ -24,8 +26,6 @@ export const fetchMessageBody = (id) => {
       id,
       body: json.body
     })
-
-    dispatch(markAsRead(message));
   }
 }
 
@@ -175,14 +175,13 @@ export function removeLabel(labelName, messages) {
         }
     }
 }
-export const MARK_AS_READ = 'MARK_AS_READ';
-export function markAsRead(messages) {
+export const MARK_SELECTED_AS_READ = 'MARK_SELECTED_AS_READ';
+export function markAsRead(ids) {
     return async (dispatch) => {
         await fetch(`${process.env.REACT_APP_API_URL}/api/messages`, {
             method: 'PATCH',
             body: JSON.stringify({
-                messageIds: messages.filter(message => message.selected)
-                    .map(msg => msg.id),
+                messageIds: ids,
                 command: 'read',
                 read: true
             }),
@@ -192,19 +191,19 @@ export function markAsRead(messages) {
             }
         });
         dispatch({
-            type: MARK_AS_READ,
+            type: MARK_SELECTED_AS_READ,
+            ids
         });
     }
 }
 
-export const MARK_AS_UNREAD = 'MARK_AS_UNREAD';
-export function markAsUnread(messages) {
+export const MARK_SELECTED_AS_UNREAD = 'MARK_SELECTED_AS_UNREAD';
+export function markAsUnread(ids) {
     return async (dispatch) => {
         await fetch(`${process.env.REACT_APP_API_URL}/api/messages`, {
             method: 'PATCH',
             body: JSON.stringify({
-                messageIds: messages.filter(message => message.selected)
-                    .map(msg => msg.id),
+                messageIds: ids,
                 command: 'read',
                 read: false
             }),
@@ -215,7 +214,7 @@ export function markAsUnread(messages) {
         });
 
         dispatch({
-            type: MARK_AS_UNREAD
+            type: MARK_SELECTED_AS_UNREAD
         });
     }
 }

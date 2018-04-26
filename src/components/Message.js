@@ -1,5 +1,5 @@
 import React from 'react'
-import { selectMessage, handleStarChange } from '../actions'
+import { selectMessage, handleStarChange, markAsRead } from '../actions'
 import {connect }  from 'react-redux'
 import { bindActionCreators }  from 'redux'
 import {Link, Route, withRouter} from 'react-router-dom'
@@ -44,7 +44,7 @@ const Message = ({
                     </div>
                 </div>
             </div>
-            <div className="col-xs-11">
+            <div className="col-xs-11" onClick={(e) => markAsRead([id])}>
                 {message.labels.map((msg, i) =>
                     <span key={i} className="label label-warning">{msg}</span>
                 )
@@ -68,6 +68,6 @@ const mapStateToProps = state =>({
 })
 
 const mapDispatchToProps = dispatch => bindActionCreators({
-  selectMessage,handleStarChange
+  selectMessage,handleStarChange, markAsRead
 }, dispatch)
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Message))

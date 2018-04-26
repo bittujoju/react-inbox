@@ -18,6 +18,7 @@ const Toolbar = ({
     let isAllMessagesSelected = false
     let checkedMessagesStyle = "fa fa-minus-square-o"
     let selectedMessages = messages.filter(message => message.selected === true)
+    let selectedIds = selectedMessages.map(msg => msg.id)
     if (selectedMessages.length === 0) {
         isMessagesSelected = false
         checkedMessagesStyle = "fa fa-square-o"
@@ -52,11 +53,11 @@ const Toolbar = ({
                     <i className={checkedMessagesStyle}></i>
     </button>
 
-    <button className="btn btn-default" disabled={!isMessagesSelected} onClick={()=>markAsRead(messages)}>
+    <button className="btn btn-default" disabled={!isMessagesSelected} onClick={()=>markAsRead(selectedIds)}>
       Mark As Read
     </button>
 
-    <button className="btn btn-default" disabled={!isMessagesSelected} onClick={()=>markAsUnread(messages)}>
+    <button className="btn btn-default" disabled={!isMessagesSelected} onClick={()=>markAsUnread(selectedIds)}>
       Mark As Unread
     </button>
 

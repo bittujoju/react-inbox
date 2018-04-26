@@ -36,7 +36,6 @@ const mapStateToProps = (state, { id }) => {
 const mapDispatchToProps = dispatch => bindActionCreators({
   fetchMessageBody
 }, dispatch)
-console.log("#####", mapDispatchToProps);
 
 export default connect(
   mapStateToProps,

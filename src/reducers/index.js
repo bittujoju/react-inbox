@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux'
-import {MESSAGES_RECEIVED,MESSAGES_TOGGLE_COMPOSE,MARK_AS_READ,MARK_AS_UNREAD, SELECT_ALL, UNSELECT_ALL, MESSAGE_SELECTION_TOGGLE, MESSAGE_STAR_TOGGLE,MESSAGES_DELETE, APPLY_LABEL, REMOVE_LABEL, MESSAGE_BODY_REQUEST_STARTED, MESSAGE_BODY_REQUEST_SUCCESS } from '../actions'
+import {MESSAGES_RECEIVED,MESSAGES_TOGGLE_COMPOSE,MARK_SELECTED_AS_READ,MARK_SELECTED_AS_UNREAD, SELECT_ALL, UNSELECT_ALL, MESSAGE_SELECTION_TOGGLE, MESSAGE_STAR_TOGGLE,MESSAGES_DELETE, APPLY_LABEL, REMOVE_LABEL, MESSAGE_BODY_REQUEST_STARTED, MESSAGE_BODY_REQUEST_SUCCESS } from '../actions'
 
 function messages(state = { all: [], ComposeMessage:false }, action) {
   let messages;
@@ -55,55 +55,56 @@ function messages(state = { all: [], ComposeMessage:false }, action) {
               return message
             })
           }
-            case MARK_AS_READ:
-              return {
-                ...state,
-                all: state.all.map(message =>{
-                  if (message.selected){
-                    return {...message, read:true}
-                  }
-                  return message
-                })
+        case MARK_SELECTED_AS_READ:
+          alert(action.ids)
+          return {
+            ...state,
+            all: state.all.map(message =>{
+              if (action.ids.includes(message.id)){
+                return {...message, read:true}
               }
-            case APPLY_LABEL:
-              return {
-                ...state,
-                all : state.all.map(message => {
-                  if (message.selected) {
-                    if (!message.labels.includes(action.labelName)) {
-                      message.labels.push(action.labelName)
-                    }
-                  }
-                  return message
-                })
+              return message
+            })
+          }
+        case APPLY_LABEL:
+          return {
+            ...state,
+            all : state.all.map(message => {
+              if (message.selected) {
+                if (!message.labels.includes(action.labelName)) {
+                  message.labels.push(action.labelName)
+                }
               }
-            case REMOVE_LABEL:
-              return {
-                ...state,
-                all : state.all.map(message => {
-                  if (message.selected) {
-                    if (message.labels.includes(action.labelName)) {
-                      message.labels.pop(action.labelName)
-                    }
-                  }
-                  return message
-                })
+              return message
+            })
+          }
+        case REMOVE_LABEL:
+          return {
+            ...state,
+            all : state.all.map(message => {
+              if (message.selected) {
+                if (message.labels.includes(action.labelName)) {
+                  message.labels.pop(action.labelName)
+                }
               }
-            case MARK_AS_UNREAD:
-              return {
-                ...state,
-                all:state.all.map(message =>{
-                  if (message.selected){
-                    return {...message, read:false}
-                  }
-                  return message
-                })
+              return message
+            })
+          }
+        case MARK_SELECTED_AS_UNREAD:
+          return {
+            ...state,
+            all:state.all.map(message =>{
+              if (message.selected){
+                return {...message, read:false}
               }
-            case MESSAGE_BODY_REQUEST_SUCCESS:
-            return {
-                ...state,
-                all: action.newMessages
-              }
+              return message
+            })
+          }
+        case MESSAGE_BODY_REQUEST_SUCCESS:
+        return {
+            ...state,
+            all: action.newMessages
+          }
 
     default:
       return state
