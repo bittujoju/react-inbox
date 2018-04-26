@@ -97,6 +97,9 @@ export function sendMessage(subject, body, history) {
       type: MESSAGES_SEND,
       message: json
     })
+    dispatch({
+      type: MESSAGES_TOGGLE_COMPOSE
+    })
     // history.push("/")
   }
 }

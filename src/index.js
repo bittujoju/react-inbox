@@ -15,12 +15,11 @@ store.dispatch(fetchMessages())
 
 ReactDOM.render(
   <Provider store= {store} >
-  <BrowserRouter>
-     <div>
-    <Inbox /> </div>
-   </BrowserRouter>
-
-
+    <BrowserRouter>
+      <div>
+        <Inbox />
+      </div>
+    </BrowserRouter>
   </Provider>,
   document.getElementById('root')
 );

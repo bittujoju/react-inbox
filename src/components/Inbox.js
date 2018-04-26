@@ -15,7 +15,7 @@ export class Inbox extends React.Component {
   }
   async componentWillReceiveProps(nextProps) {
 
-      this.setState({composeMessage: true,
+      this.setState({composeMessage: false,
                     displayBodyOfMessageId: -1})
   }
     render() {

@@ -84,8 +84,8 @@ function messages(state = { all: [], ComposeMessage:false }, action) {
                 all : state.all.map(message => {
                   if (message.selected) {
                     if (message.labels.includes(action.labelName)) {
-                      const newLabels = message.labels
-                      newLabels.pop(action.labelName)
+                      let newLabels = message.labels
+                      newLabels= newLabels.filter(label => label != action.labelName)
                       return {...message, labels: newLabels}
                     }
                   }
